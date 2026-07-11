@@ -6,18 +6,17 @@ import fs from "fs";
 
 const require = createRequire(import.meta.url);
 
-// Dynamically look for the file in the root first (e.g., Render production), 
-// then fall back to the config/ directory (e.g., Local development)
-const rootPath = path.resolve(process.cwd(), 'firebase-service-account.json');
-const configPath = path.resolve(process.cwd(), 'config/firebase-service-account.json');
+// 1. Define paths for both Render production (root) and Local development (config folder)
+const renderRootPath = path.resolve(process.cwd(), 'firebase-service-account.json');
+const localConfigPath = path.resolve(process.cwd(), 'config', 'firebase-service-account.json');
 
-// Determine the correct absolute path based on file existence
-const serviceAccountPath = fs.existsSync(rootPath) ? rootPath : configPath;
+// 2. Automatically pick the path that actually contains the secret credentials file
+const absolutePathToSecret = fs.existsSync(renderRootPath) ? renderRootPath : localConfigPath;
 
-// Safely require the JSON configuration file using the resolved path[cite: 14]
-const serviceAccount = require(serviceAccountPath);
+// 3. Cleanly require the service account JSON file using the resolved path
+const serviceAccount = require(absolutePathToSecret);
 
-// Initialize the Firebase Admin instance if one does not already exist[cite: 14]
+// 4. Initialize the Firebase Admin SDK if an instance does not already exist
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
