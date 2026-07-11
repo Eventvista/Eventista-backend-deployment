@@ -1,0 +1,5 @@
+backend/config/firebase-service-account.json
+backend/node_modules
+backend/.env
+backend/Backend compiled scripts.txt
+backend/Environment Variables Security.md
