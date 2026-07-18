@@ -3,3 +3,5 @@ backend/node_modules
 backend/.env
 backend/Backend compiled scripts.txt
 backend/Environment Variables Security.md
+backend/backend_compiled_system.txt
+backend/compile_system.py
